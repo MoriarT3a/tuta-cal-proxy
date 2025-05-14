@@ -1,82 +1,159 @@
-# Änderungen in Version 1.1.0
+# Kalender-Proxy
 
-## Übersicht
+Ein Proxy-Server für ICS-Kalender mit erweiterter Kompatibilität für verschiedene Kalender-Clients.
 
-Version 1.1.0 des Kalender-Proxys enthält mehrere bedeutende Verbesserungen, die insbesondere die Handhabung von wiederkehrenden Terminen verbessern. Diese Aktualisierungen erhöhen die Kompatibilität mit verschiedenen Kalender-Clients und beheben Fehler bei der Expansion von wiederkehrenden Ereignissen.
+## Installation & Start
 
-## Hauptänderungen
+### Option 1: Mit Docker Compose (empfohlen)
 
-### 1. Verbesserte Behandlung von UNTIL-Daten in wiederkehrenden Terminen
+1. Repository klonen:
+   ```bash
+   git clone https://github.com/yourusername/calendar-proxy.git
+   cd calendar-proxy
+   ```
 
-* Korrekte Interpretation und Anwendung des UNTIL-Datums bei der Expansion von wiederkehrenden Terminen
-* Terminserie endet jetzt zuverlässig am angegebenen UNTIL-Datum anstatt inkorrekt weiter zu laufen
-* Sorgfältige Datumsberechnung unter Berücksichtigung verschiedener Zeitzonenformate
+2. `.env` Datei erstellen:
+   ```bash
+   cp .env.example .env
+   ```
 
-### 2. Spezielle Verarbeitung für Termine mit kurzen Zeiträumen
+3. Konfiguration in `.env` anpassen:
+   ```
+   SOURCE_CALENDAR_URL=https://example.com/calendar.ics
+   LOG_LEVEL=INFO
+   TZ=Europe/Berlin
+   PORT=8098
+   ```
 
-* Intelligente Erkennung und Spezialbehandlung für Termine, die nur über einen kurzen Zeitraum wiederholt werden
-* Korrekte Expansion von Terminen, die innerhalb weniger Tage mehrfach wiederholt werden
-* Tag-genaue Iteration für Termine mit spezifischen Wochentagen und kurzen Zeiträumen
+4. Mit Docker Compose starten:
+   ```bash
+   docker-compose up -d
+   ```
 
-### 3. Robustheit gegen fehlerhafte RRULE-Eigenschaften
+### Option 2: Manuell
 
-* Verbesserte Validierung und Bereinigung von RRULE-Eigenschaften
-* Fallback auf manuelle Expansion bei Problemen mit der automatischen dateutil.rrule-Methode
-* Bessere Fehlerbehandlung und informative Logging-Nachrichten
+1. Repository klonen:
+   ```bash
+   git clone https://github.com/yourusername/calendar-proxy.git
+   cd calendar-proxy
+   ```
 
-### 4. Optimierte Verarbeitungslogik
+2. Python-Abhängigkeiten installieren:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-* Duale Expansionsstrategie mit automatischer und manueller Methode für maximale Kompatibilität
-* Zusätzliche Validierung für Termine mit geringer Anzahl an Wiederholungen
-* Verbesserte Performance durch intelligentere Algorithmen
+3. (Optional) Umgebungsvariablen setzen:
+   ```bash
+   export SOURCE_CALENDAR_URL=https://example.com/calendar.ics
+   export LOG_LEVEL=INFO
+   export TZ=Europe/Berlin
+   export PORT=8098
+   ```
 
-## Technische Details
+4. Server starten:
+   ```bash
+   python app.py
+   ```
 
-### Behandlung von wiederkehrenden Terminen (in expand.py)
+## Nutzung
 
-Die neue `expand_recurring_event`-Funktion enthält jetzt mehrere Optimierungen:
+### 1. Kalender abrufen
 
-* Frühzeitige Erkennung von kurzen Zeiträumen
-* Spezielle Behandlung für Termine mit UNTIL-Datum
-* Validierung der generierten Instanzen für höhere Zuverlässigkeit
+Standardzugriff (falls SOURCE_CALENDAR_URL konfiguriert):
+```
+http://localhost:8098/
+```
 
-### Spezialverarbeitung für wöchentliche Termine (in frequency.py)
+Mit expliziter Quell-URL:
+```
+http://localhost:8098/?source=https://example.com/calendar.ics
+```
 
-Die `expand_weekly`-Funktion wurde überarbeitet, um insbesondere Termine mit UNTIL-Datum korrekt zu behandeln:
+Mit angepasstem Zeitraum (62 Tage in die Vergangenheit, 365 Tage in die Zukunft):
+```
+http://localhost:8098/?days_before=62&days_after=365
+```
 
-* Verbesserte Berechnung der Wochenintervalle
-* Korrekte Berücksichtigung des UNTIL-Datums bei der Termingeneration
-* Robustere Verarbeitung verschiedener BYDAY-Formate
+### 2. Debug-Informationen anzeigen
 
-### Manuelle Expansion (in events.py)
+Debug-Informationen für einen Kalender anzeigen:
+```
+http://localhost:8098/debug
+```
 
-Die manuelle Expansion wurde komplett überarbeitet:
+Mit expliziter Quell-URL:
+```
+http://localhost:8098/debug?source=https://example.com/calendar.ics
+```
 
-* Präzisere Tag-für-Tag-Iteration für kurze Zeiträume
-* Verbesserte Wochentagsberechnung
-* Korrekte Behandlung von Ausnahmen und ausgeschlossenen Daten (EXDATE)
+### 3. Health-Check
 
-## Behobene Probleme
+Für Docker-Healthchecks und Monitoring:
+```
+http://localhost:8098/health
+```
 
-* **UNTIL-Datum nicht beachtet**: Wiederkehrende Termine mit definiertem Enddatum (UNTIL) laufen nicht mehr über dieses Datum hinaus
-* **Fehlerhafte wöchentliche Wiederholung**: Korrekte Berechnung für Termine, die nur an bestimmten Wochentagen innerhalb eines kurzen Zeitraums stattfinden
-* **Importfehler in Modulen**: Korrekte Importe für alle benötigten Module, einschließlich 're' für reguläre Ausdrücke
-* **Fehlendes 'get_date_string'**: Implementierung der fehlenden Funktion zur Datumsformatierung
-* **Fehlerhafte relative Importe**: Korrektur der Importpfade in calendar_routes.py
+## Konfiguration
 
-## Kompatibilität
+### Umgebungsvariablen
 
-Diese Aktualisierung verbessert die Kompatibilität mit folgenden Kalendersystemen:
-* Tuta-Kalender
-* Google Kalender
-* Apple Kalender
-* Outlook 365
-* Thunderbird Lightning
-* NextCloud Kalender
+Die folgenden Umgebungsvariablen können konfiguriert werden:
 
-## Empfohlene Aktionen für Benutzer
+| Variable | Beschreibung | Standardwert |
+|----------|--------------|--------------|
+| `SOURCE_CALENDAR_URL` | Die URL des Quell-Kalenders | - |
+| `TZ` | Die Zeitzone | Europe/Berlin |
+| `LOG_LEVEL` | Log-Level (DEBUG, INFO, WARNING, ERROR, CRITICAL) | INFO |
+| `PORT` | Der Port, auf dem der Server läuft | 8098 |
 
-* Aktualisieren Sie auf Version 1.1.0, um von den verbesserten Wiederholungsregeln zu profitieren
-* Wenn Sie eigene Anpassungen vorgenommen haben, integrieren Sie diese sorgfältig in die aktualisierte Codebasis
-* Testen Sie die neue Version mit Ihren speziellen Kalenderszenarien, insbesondere bei komplexen wiederkehrenden Terminen
-* Prüfen Sie bei Problemen den Debug-Endpunkt und die Logs für detaillierte Informationen
+### URL-Parameter
+
+Die folgenden URL-Parameter können verwendet werden:
+
+| Parameter | Beschreibung | Standardwert |
+|-----------|--------------|--------------|
+| `source` | Die URL des Quell-Kalenders | - |
+| `days_before` | Anzahl der Tage in die Vergangenheit | 30 |
+| `days_after` | Anzahl der Tage in die Zukunft | 365 |
+| `debug` | Debug-Modus aktivieren (true/false) | false |
+
+## Problembehandlung
+
+### Health-Check
+
+Überprüfen Sie, ob der Server läuft:
+```bash
+curl http://localhost:8098/health
+```
+
+### Debug-Modus
+
+Setzen Sie `LOG_LEVEL=DEBUG` in der `.env` Datei oder starten Sie den Server mit:
+```bash
+export LOG_LEVEL=DEBUG
+python app.py
+```
+
+### Debug-Tool
+
+Verwenden Sie das mitgelieferte debug_calendar.py-Tool:
+```bash
+python debug_calendar.py --url https://example.com/calendar.ics --proxy-url http://localhost:8098
+```
+
+### Docker-Logs
+
+Prüfen Sie die Docker-Logs für Fehlermeldungen:
+```bash
+docker-compose logs -f
+```
+
+## Weitere Informationen
+
+- [Technische Dokumentation](TECHNICAL.md) - Detaillierte technische Beschreibung der Funktionalität
+- [Änderungsprotokoll](CHANGELOG.md) - Historie aller Änderungen und Updates
+
+## Lizenz
+
+Dieses Projekt steht unter der MIT-Lizenz.
