@@ -1,0 +1,32 @@
+services:
+  cal-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: calendar-proxy
+    restart: unless-stopped
+    # Direkte Portzuordnung - dies sollte zu deinem Reverse-Proxy Setup passen
+    ports:
+      - "8098:8098"
+    # Volumes für Logs
+    volumes:
+      - ./logs:/app/logs
+    # Umgebungsvariablen
+    environment:
+      - TZ=Europe/Berlin
+    # Umgebungsvariablen aus .env Datei laden
+    env_file:
+      - .env
+    # Health check für eine bessere Überwachung
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8098/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Ressourcenlimits, um den Container zu zügeln
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
