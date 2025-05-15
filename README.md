@@ -160,8 +160,8 @@ docker-compose logs -f
 
 ## Weitere Informationen
 
-- [Technische Dokumentation](TECHNICAL.md) - Detaillierte technische Beschreibung der Funktionalität
-- [Änderungsprotokoll](CHANGELOG.md) - Historie aller Änderungen und Updates
+- [Technische Dokumentation](technical.md) - Detaillierte technische Beschreibung der Funktionalität
+- [Änderungsprotokoll](changelog.md) - Historie aller Änderungen und Updates
 
 ## Lizenz
 
