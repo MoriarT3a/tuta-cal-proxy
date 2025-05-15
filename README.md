@@ -17,7 +17,7 @@ Der gesamte Code steht unter der MIT-Lizenz. Ihr dürft also gerne den Code als 
 
 1. Repository klonen:
    ```bash
-   git clone https://github.com/yourusername/calendar-proxy.git
+   git clone https://github.com/MoriarT3a/tuta-cal-proxy.git
    cd calendar-proxy
    ```
 
@@ -28,10 +28,10 @@ Der gesamte Code steht unter der MIT-Lizenz. Ihr dürft also gerne den Code als 
 
 3. Konfiguration in `.env` anpassen:
    ```
-   SOURCE_CALENDAR_URL=https://example.com/calendar.ics
+   SOURCE_CALENDAR_URL=https://example.com/calendar.ics # Deine Kalender Source URL
    LOG_LEVEL=INFO
-   TZ=Europe/Berlin
-   PORT=8098
+   TZ=Europe/Berlin # Deine Zeitzone ggf. anpassen.
+   PORT=8098 # Der Port auf den der Container erreichbar sein soll
    ```
 
 4. Mit Docker Compose starten:
@@ -43,7 +43,7 @@ Der gesamte Code steht unter der MIT-Lizenz. Ihr dürft also gerne den Code als 
 
 1. Repository klonen:
    ```bash
-   git clone https://github.com/yourusername/calendar-proxy.git
+   git clone https://github.com/MoriarT3a/tuta-cal-proxy.git
    cd calendar-proxy
    ```
 
@@ -76,7 +76,7 @@ http://localhost:8098/
 
 Mit expliziter Quell-URL:
 ```
-http://localhost:8098/?source=https://example.com/calendar.ics
+http://localhost:8098/?source=https://example.com/calendar.ics # Nützlich wenn ihr mehrere Kalender über einen Proxy anpassen lassen wollt.
 ```
 
 Mit angepasstem Zeitraum (62 Tage in die Vergangenheit, 365 Tage in die Zukunft):
