@@ -4,7 +4,7 @@ Ein Proxy-Server für ICS-Kalender mit erweiterter Kompatibilität für verschie
 
 ## Disclaimer
 Dieses Tool wurde von mir explizit geschrieben, um die Probleme beim Einbinden eines freigegebenen O365 Kalenders in der tuta Kalender-App für mich zu beheben. Es steht in keiner Verbiundung zu Tuta oder früher Tutanota.
-Ich übernehme keinerlei Haftung für Schäden jeglicher Art. Auch bin ich nicht dafür verantwortlich, solltet ihr für irgendwelche Fehlfunktionen irgendwo geblockt werden. Insgesamt nehme ich keine HAftung für Fehlfunktionen.
+Ich übernehme keinerlei Haftung für Schäden jeglicher Art. Auch bin ich nicht dafür verantwortlich, solltet ihr für irgendwelche Fehlfunktionen irgendwo geblockt werden. Insgesamt nehme ich keine Haftung für Fehlfunktionen oder sonstwas.
 Auch wenn dieses Script so vorbereitet ist, dass man es relativ einfach auf seinem Homeserver zum laufen bekommen kann, ist es eher für versierte Personen gedacht. Ich übernehme keinerlei Support. Issues sind deaktiviert, weil das Tool für mich so funktioniert und macht was es soll. Insgesamt bin ich nicht an einer Weiterentwicklung interessiert. Für mich ist das Projekt abgeschlossen.
 
 Der gesamte Code steht unter der MIT-Lizenz. Ihr dürft also gerne den Code als Basis für eure Projekte nutzen und damit machen was ihr wollt. VIel Spaß und viel Erfolg. 😁👍 
