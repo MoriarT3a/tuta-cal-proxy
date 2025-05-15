@@ -75,8 +75,9 @@ http://localhost:8098/
 ```
 
 Mit expliziter Quell-URL:
+Nützlich wenn ihr mehrere Kalender über einen Proxy anpassen lassen wollt.
 ```
-http://localhost:8098/?source=https://example.com/calendar.ics # Nützlich wenn ihr mehrere Kalender über einen Proxy anpassen lassen wollt.
+http://localhost:8098/?source=https://example.com/calendar.ics
 ```
 
 Mit angepasstem Zeitraum (62 Tage in die Vergangenheit, 365 Tage in die Zukunft):
